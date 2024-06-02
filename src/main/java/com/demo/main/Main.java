@@ -24,30 +24,38 @@ public class Main {
         // Begin a transaction
         Transaction transaction = session.beginTransaction();
 
-            // 1. Retrieve all users
-            System.out.println("Retrieving all users:");
-            Query queryRetrieveAllUsers = session.createQuery("SELECT u FROM User u", User.class);
-            List<User> allUsers = queryRetrieveAllUsers.getResultList();
-            for (User user : allUsers) {
-                System.out.println("User ID: " + user.getId() + ", Name: " + user.getName() + ", Email: " + user.getEmail());
-            }
 
-            // 2. Retrieve users based on specific criteria
-            System.out.println("\nRetrieving users with name 'John Doe':");
-            String jpqlRetrieveUsersByName = "SELECT u FROM User u WHERE u.name = :userName";
-            Query queryRetrieveUsersByName = session.createQuery(jpqlRetrieveUsersByName, User.class);
-            queryRetrieveUsersByName.setParameter("userName", "kiran");
-            List<User> usersByName = queryRetrieveUsersByName.getResultList();
-            for (User user : usersByName) {
-                System.out.println("User ID: " + user.getId() + ", Name: " + user.getName() + ", Email: " + user.getEmail());
-            }
+            // Define named queries (Different)
+            String hqlRetrieveUsersByStatus = "FROM User u WHERE u.name = :userName";
+            String jpqlRetrieveUsersByStatus = "SELECT u FROM User u WHERE u.name = :userName";
+
+            // Execute HQL named query to retrieve users by status
+            Query hqlQuery = session.createQuery(hqlRetrieveUsersByStatus, User.class);
+            hqlQuery.setParameter("userName", "Kiran");
+            List<User> hqlUsers = hqlQuery.getResultList();
+            System.out.println("Users retrieved by HQL (Different):");
+            printUsers(hqlUsers);
+
+            // Execute JPQL named query to retrieve users by status
+            Query jpqlQuery = session.createQuery(jpqlRetrieveUsersByStatus, User.class);
+            jpqlQuery.setParameter("userName", "Shiva");
+            List<User> jpqlUsers = jpqlQuery.getResultList();
+            System.out.println("\nUsers retrieved by JPQL (Different):");
+            printUsers(jpqlUsers);
 
             // Commit the transaction
             transaction.commit();
-      
-            // Close session and session factory
+  
+        
             session.close();
             sessionFactory.close();
         
+    }
+
+    // Utility method to print users
+    private static void printUsers(List<User> users) {
+        for (User user : users) {
+            System.out.println("User ID: " + user.getId() + ", Name: " + user.getName() + ", Email: " + user.getEmail() );
         }
+    }
 }
