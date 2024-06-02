@@ -50,14 +50,14 @@ public class Main {
         // Open a new session for demonstration
         Session newSession = sessionFactory.openSession();
 
-        // Retrieve the author (first time - hits the database)
+        // Retrieve the author (with eager loading - hits the database and retrieves books in the same query)
         System.out.println("Retrieving the author from the database...");
         Author retrievedAuthor = newSession.get(Author.class, author.getId());
         System.out.println("Author retrieved:");
         printAuthor(retrievedAuthor);
 
-        // Access the books (triggers lazy loading)
-        System.out.println("Accessing the books (triggers lazy loading)...");
+        // Access the books (already loaded eagerly)
+        System.out.println("Books retrieved eagerly:");
         retrievedAuthor.getBooks().forEach(Main::printBook);
 
         // Close the second session
@@ -70,7 +70,7 @@ public class Main {
     // Utility method to print author
     private static void printAuthor(Author author) {
         if (author != null) {
-            System.out.println("Author ID: " + author.getId() + ", Name: " + author.getName() );
+            System.out.println("Author ID: " + author.getId() + ", Name: " + author.getName());
         } else {
             System.out.println("Author not found.");
         }

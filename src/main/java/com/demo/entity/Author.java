@@ -17,7 +17,7 @@ public class Author {
 
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "author")
     private Set<Book> books;
 
 	public Long getId() {
