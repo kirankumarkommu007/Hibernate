@@ -28,6 +28,13 @@ public class Main {
 		regularUser.setName("kiran");
 		session.save(regularUser);
 
+		
+		RegularUser regularUser1 = new RegularUser();
+		regularUser1.setStatus("DEACTIVE");
+		regularUser1.setEmail("shivam@gmail.com");
+		regularUser1.setName("Shiva");
+		session.save(regularUser1);
+
 
 		AdminUser adminUser = new AdminUser();
 		adminUser.setAdminLevel("SUPER ADMIN");
