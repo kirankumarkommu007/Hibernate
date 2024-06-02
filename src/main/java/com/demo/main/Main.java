@@ -1,7 +1,6 @@
 package com.demo.main;
 
 import com.demo.entity.Author;
-import com.demo.entity.Book;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -21,25 +20,11 @@ public class Main {
         // Begin a transaction
         Transaction transaction = session.beginTransaction();
 
-        // Create a new author
+        // Create a new author and save it
         Author author = new Author();
-        author.setName("John Doe");
-
-        // Create new books
-        Book book1 = new Book();
-        book1.setTitle("Java Programming");
-        book1.setPrice(45.00);
-        book1.setAuthor(author);
-
-        Book book2 = new Book();
-        book2.setTitle("Hibernate in Action");
-        book2.setPrice(55.00);
-        book2.setAuthor(author);
-
-        // Save the author and books
+        author.setName("kommu kirankumar");
+        author.setEmail("Kiran.kumar@example.com");
         session.save(author);
-        session.save(book1);
-        session.save(book2);
 
         // Commit the transaction
         transaction.commit();
@@ -49,16 +34,19 @@ public class Main {
 
         // Open a new session for demonstration
         Session newSession = sessionFactory.openSession();
+        Transaction newTransaction = newSession.beginTransaction();
 
-        // Retrieve the author (with eager loading - hits the database and retrieves books in the same query)
-        System.out.println("Retrieving the author from the database...");
+        // Retrieve the author and modify its name
         Author retrievedAuthor = newSession.get(Author.class, author.getId());
         System.out.println("Author retrieved:");
         printAuthor(retrievedAuthor);
 
-        // Access the books (already loaded eagerly)
-        System.out.println("Books retrieved eagerly:");
-        retrievedAuthor.getBooks().forEach(Main::printBook);
+        // Modify the author's name
+        retrievedAuthor.setName("Shiva Kumar");
+        System.out.println("Author name changed to 'Shiva kumar'.");
+
+        // Commit the transaction (this triggers dirty checking and updates the database)
+        newTransaction.commit();
 
         // Close the second session
         newSession.close();
@@ -70,18 +58,9 @@ public class Main {
     // Utility method to print author
     private static void printAuthor(Author author) {
         if (author != null) {
-            System.out.println("Author ID: " + author.getId() + ", Name: " + author.getName());
+            System.out.println("Author ID: " + author.getId() + ", Name: " + author.getName() + ", Email: " + author.getEmail());
         } else {
             System.out.println("Author not found.");
-        }
-    }
-
-    // Utility method to print book
-    private static void printBook(Book book) {
-        if (book != null) {
-            System.out.println("Book ID: " + book.getId() + ", Title: " + book.getTitle() + ", Price: " + book.getPrice());
-        } else {
-            System.out.println("Book not found.");
         }
     }
 }
