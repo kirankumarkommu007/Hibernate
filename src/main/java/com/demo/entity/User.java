@@ -1,17 +1,26 @@
 package com.demo.entity;
 
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 
 @Entity
-public class NewUser {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "USER_TYPE", discriminatorType = DiscriminatorType.STRING)
+public abstract class User {
+	
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
-    
     private String name;
     private String email;
 
-    // getters and setters
+    // Getters and setters
     public int getId() {
         return id;
     }

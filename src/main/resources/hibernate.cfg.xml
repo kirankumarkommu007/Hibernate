@@ -11,7 +11,11 @@
 		<property name="hibernate.hbm2ddl.auto">update</property>
 
 
-		<mapping class="com.demo.entity.NewUser" />
+		<mapping class="com.demo.entity.User" />
+		<mapping class="com.demo.entity.RegularUser" />
+
+		<mapping class="com.demo.entity.AdminUser" />
+
 
 	</session-factory>
 </hibernate-configuration>
