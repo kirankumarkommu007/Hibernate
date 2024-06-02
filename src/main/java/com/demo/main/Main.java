@@ -1,57 +1,58 @@
 package com.demo.main;
 
+import com.demo.entity.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
-import com.demo.entity.AdminUser;
-import com.demo.entity.RegularUser;
+import java.util.List;
 
 public class Main {
-	public static void main(String[] args) {
-		// Create a Hibernate configuration object
-		Configuration configuration = new Configuration().configure();
+    public static void main(String[] args) {
+        // Create a Hibernate configuration object
+        Configuration configuration = new Configuration().configure();
 
-		// Create a session factory
-		SessionFactory sessionFactory = configuration.buildSessionFactory();
+        // Create a session factory
+        SessionFactory sessionFactory = configuration.buildSessionFactory();
 
-		// Open a session
-		Session session = sessionFactory.openSession();
+        // Open a session
+        Session session = sessionFactory.openSession();
 
-		// Begin a transaction
-		Transaction transaction = session.beginTransaction();
+        // Begin a transaction
+        Transaction transaction = session.beginTransaction();
+        
+        
+        
+        
 
-		RegularUser regularUser = new RegularUser();
-		regularUser.setStatus("ACTIVE");
-		regularUser.setEmail("kommu@gmail.com");
-		regularUser.setName("kiran");
-		session.save(regularUser);
+        // 1. Retrieve all users
+        System.out.println("Retrieving all users:");
+        Query<User> queryRetrieveAllUsers = session.createQuery("FROM User", User.class);
+        List<User> allUsers = queryRetrieveAllUsers.list();
+        for (User user : allUsers) {
+            System.out.println("User ID: " + user.getId() + ", Name: " + user.getName() + ", Email: " + user.getEmail());
+        }
+        
+        
 
-		
-		RegularUser regularUser1 = new RegularUser();
-		regularUser1.setStatus("DEACTIVE");
-		regularUser1.setEmail("shivam@gmail.com");
-		regularUser1.setName("Shiva");
-		session.save(regularUser1);
+        // 2. Retrieve users based on specific criteria
+        System.out.println("\nRetrieving users with name 'John Doe':");
+        String hqlRetrieveUsersByName = "FROM User U WHERE U.name = :userName";
+        Query<User> queryRetrieveUsersByName = session.createQuery(hqlRetrieveUsersByName, User.class);
+        queryRetrieveUsersByName.setParameter("userName", "kiran");
+        List<User> usersByName = queryRetrieveUsersByName.list();
+        for (User user : usersByName) {
+            System.out.println("User ID: " + user.getId() + ", Name: " + user.getName() + ", Email: " + user.getEmail());
+        }
 
 
-		AdminUser adminUser = new AdminUser();
-		adminUser.setAdminLevel("SUPER ADMIN");
-		adminUser.setEmail("admin@gmail.com");
-		adminUser.setName("shiva");
+        // Commit the transaction
+        transaction.commit();
 
-		
-		session.save(adminUser);
-		
-		// Commit the transaction
-		transaction.commit();
-
-		// The user objects are now in the detached state
-		session.close();
-
-		System.out.println("Users saved successfully");
-
-		sessionFactory.close();
-	}
+        // Close session and session factory
+        session.close();
+        sessionFactory.close();
+    }
 }
