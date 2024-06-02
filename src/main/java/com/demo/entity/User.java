@@ -1,6 +1,9 @@
 package com.demo.entity;
 
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,6 +11,7 @@ import jakarta.persistence.Id;
 
 
 @Entity
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class User {
 	
     @Id

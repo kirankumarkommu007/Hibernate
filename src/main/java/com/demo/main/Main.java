@@ -25,16 +25,7 @@ public class Main {
         System.out.println("First retrieval:");
         printUser(user1);
 
-        // Retrieve the same user by ID (second time - uses first-level cache)
-        User user2 = session.get(User.class, 2);
-        System.out.println("Second retrieval:");
-        printUser(user2);
-        
-        
-        User user5 = session.get(User.class, 1);
-        System.out.println("third retrieval:");
-        printUser(user5);
-
+ 
 
         // Commit the transaction
         transaction.commit();
@@ -49,14 +40,10 @@ public class Main {
         Transaction transaction1 = session1.beginTransaction();
 
         // Retrieve user by ID (third time - hits the database again)
-        User user3 = session1.get(User.class, 1);
-        System.out.println("4th retrieval:");
-        printUser(user3);
+        User user2 = session1.get(User.class, 1);
+        System.out.println("Here retriving from second Level retrieval:");
+        printUser(user2);
         
-        
-        User user4 = session1.get(User.class, 1);
-        System.out.println("5th retrieval:");
-        printUser(user4);
 
         // Commit the transaction
         transaction1.commit();

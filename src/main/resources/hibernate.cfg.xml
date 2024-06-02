@@ -1,16 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
-    <session-factory>
-        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/hibernate</property>
-        <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password">Kiran@1226</property>
-        <property name="hibernate.show_sql">true</property>
-        <property name="hibernate.format_sql">true</property>
-        <property name="hibernate.hbm2ddl.auto">update</property>
+	<session-factory>
+		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+		<property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/hibernate</property>
+		<property name="hibernate.connection.username">root</property>
+		<property name="hibernate.connection.password">Kiran@1226</property>
+		<property name="hibernate.show_sql">true</property>
+		<property name="hibernate.format_sql">true</property>
+		<property name="hibernate.hbm2ddl.auto">update</property>
 
-        <mapping class="com.demo.entity.User" />
-    </session-factory>
+
+
+
+		
+		
+		    <!-- Enable Hibernate's second-level cache -->
+        <property name="hibernate.cache.use_second_level_cache">true</property>
+        
+        <!-- Specify the JCache region factory -->
+        <property name="hibernate.cache.region.factory_class">org.hibernate.cache.jcache.JCacheRegionFactory</property>
+        
+        <!-- Specify the JCache provider and cache manager configuration -->
+        <property name="hibernate.javax.cache.provider">org.ehcache.jsr107.EhcacheCachingProvider</property>
+        <property name="hibernate.javax.cache.uri">classpath:ehcache.xml</property>
+
+		<mapping class="com.demo.entity.User" />
+	</session-factory>
 </hibernate-configuration>
