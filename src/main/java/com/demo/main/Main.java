@@ -5,8 +5,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
-import com.demo.entity.AdminUser;
-import com.demo.entity.RegularUser;
+import com.demo.entity.Address;
+import com.demo.entity.User;
+
 
 public class Main {
 	public static void main(String[] args) {
@@ -21,22 +22,24 @@ public class Main {
 
 		// Begin a transaction
 		Transaction transaction = session.beginTransaction();
+		User user = new User();
+        user.setName("Kiran");
+        user.setEmail("Kommu@gmail.com");
 
-		RegularUser regularUser = new RegularUser();
-		regularUser.setStatus("ACTIVE");
-		regularUser.setEmail("kommu@gmail.com");
-		regularUser.setName("kiran");
-		session.save(regularUser);
+        // Create Address object
+        Address address = new Address();
+        address.setStreet("Mlg");
+        address.setCity("nalgonda");
+        address.setState("TG");
+        address.setZipCode("508207");
+
+        // Set address to user
+        user.setAddress(address);
+
+        // Save the user object (Persistent state)
+        session.save(user);
 
 
-		AdminUser adminUser = new AdminUser();
-		adminUser.setAdminLevel("SUPER ADMIN");
-		adminUser.setEmail("admin@gmail.com");
-		adminUser.setName("shiva");
-
-		
-		session.save(adminUser);
-		
 		// Commit the transaction
 		transaction.commit();
 

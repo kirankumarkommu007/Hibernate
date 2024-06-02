@@ -12,8 +12,7 @@
 
 
 		<mapping class="com.demo.entity.User" />
-		<mapping class="com.demo.entity.RegularUser" />
-		<mapping class="com.demo.entity.AdminUser" />
+	
 
 
 	</session-factory>
