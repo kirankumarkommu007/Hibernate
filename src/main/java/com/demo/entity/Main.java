@@ -13,7 +13,7 @@ import java.util.List;
 
 public class Main {
 	public static void main(String[] args) {
-	
+
 		Configuration configuration = new Configuration().configure();
 
 		SessionFactory sessionFactory = configuration.buildSessionFactory();
@@ -28,7 +28,7 @@ public class Main {
 		Root<NewUser> root = cq.from(NewUser.class);
 
 		// Create a condition (predicate) to find employees with id = 1
-		Predicate predicate = cb.equal(root.get("id"), "1");
+		Predicate predicate = cb.equal(root.get("name"), "Shiva Pabbu");
 
 		// Set the query to select all columns from Employee where the condition is met
 		cq.select(root).where(predicate);
@@ -38,9 +38,9 @@ public class Main {
 
 		// Iterate over the results and print the fetched Employee details
 		for (NewUser user : result) {
-			System.out.println("Fetched User: " + user.getName() + ", " + user.getEmail());
+			System.out.println("Fetched User: "+"User Name: " + user.getName() + ", User Email: " + user.getEmail());
 		}
 
-		 sessionFactory.close();
+		sessionFactory.close();
 	}
 }
