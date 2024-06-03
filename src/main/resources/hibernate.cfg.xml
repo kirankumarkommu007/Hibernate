@@ -14,7 +14,8 @@
 		<mapping class="com.demo.entity.User" />
 
 
-
 	</session-factory>
+	
+	
 </hibernate-configuration>
 

@@ -2,12 +2,12 @@ package com.demo.main;
 
 import com.demo.entity.User;
 
-import jakarta.persistence.Query;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.hibernate.cfg.Configuration;
+
 import java.util.List;
 
 public class Main {
@@ -21,41 +21,26 @@ public class Main {
         // Open a session
         Session session = sessionFactory.openSession();
 
-        // Begin a transaction
-        Transaction transaction = session.beginTransaction();
+        // Retrieve the named query
+        Query<User> query = session.createNamedQuery("findAllEmployees", User.class);
 
+        // Execute the query to fetch employees
+        List<User> employees = query.getResultList();
 
-            // Define named queries (Different)
-            String hqlRetrieveUsersByStatus = "FROM User u WHERE u.name = :userName";
-            String jpqlRetrieveUsersByStatus = "SELECT u FROM User u WHERE u.name = :userName";
+        // Print the retrieved employees
+        printUsers(employees);
 
-            // Execute HQL named query to retrieve users by status
-            Query hqlQuery = session.createQuery(hqlRetrieveUsersByStatus, User.class);
-            hqlQuery.setParameter("userName", "Kiran");
-            List<User> hqlUsers = hqlQuery.getResultList();
-            System.out.println("Users retrieved by HQL (Different):");
-            printUsers(hqlUsers);
+        // Close the session
+        session.close();
 
-            // Execute JPQL named query to retrieve users by status
-            Query jpqlQuery = session.createQuery(jpqlRetrieveUsersByStatus, User.class);
-            jpqlQuery.setParameter("userName", "Shiva");
-            List<User> jpqlUsers = jpqlQuery.getResultList();
-            System.out.println("\nUsers retrieved by JPQL (Different):");
-            printUsers(jpqlUsers);
-
-            // Commit the transaction
-            transaction.commit();
-  
-        
-            session.close();
-            sessionFactory.close();
-        
+        // Close the session factory
+        sessionFactory.close();
     }
 
     // Utility method to print users
     private static void printUsers(List<User> users) {
         for (User user : users) {
-            System.out.println("User ID: " + user.getId() + ", Name: " + user.getName() + ", Email: " + user.getEmail() );
+            System.out.println("User ID: " + user.getId() + ", Name: " + user.getName() + ", Email: " + user.getEmail());
         }
     }
 }
