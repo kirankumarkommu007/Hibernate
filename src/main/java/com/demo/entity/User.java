@@ -10,21 +10,21 @@ import jakarta.persistence.InheritanceType;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class User {
+public class User {
 	
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private int id;
+    private int user_id;
     private String name;
     private String email;
 
     // Getters and setters
     public int getId() {
-        return id;
+        return user_id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(int user_id) {
+        this.user_id = user_id;
     }
 
     public String getName() {
