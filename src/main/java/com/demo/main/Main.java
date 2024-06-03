@@ -1,6 +1,6 @@
 package com.demo.main;
 
-import com.demo.entity.User;
+import com.demo.entity.Product;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -8,6 +8,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.hibernate.cfg.Configuration;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
@@ -18,29 +19,43 @@ public class Main {
         // Create a session factory
         SessionFactory sessionFactory = configuration.buildSessionFactory();
 
-        // Open a session
         Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
 
-        // Retrieve the named query
-        Query<User> query = session.createNamedQuery("findAllEmployees", User.class);
+        // Create a list of Product objects
+        List<Product> products = new ArrayList<Product>();
+        products.add(new Product("Laptop", 999.99));
+        products.add(new Product("Smartphone", 599.99));
+        products.add(new Product("Headphones", 99.99));
+        products.add(new Product("Tablet", 399.99));
 
-        // Execute the query to fetch employees
-        List<User> employees = query.getResultList();
+        // Set the batch size
+        int batchSize = 2;
 
-        // Print the retrieved employees
-        printUsers(employees);
+        // Process batches within a single transaction
+        for (int i = 0; i < products.size(); i += batchSize) {
+            int endIndex = Math.min(i + batchSize, products.size());
+            List<Product> batchProducts = products.subList(i, endIndex);
+            
+            // Print batch started
+            System.out.println("Batch started: " + batchProducts.size() + " products");
 
-        // Close the session
+            // Save products in the current batch
+            for (Product product : batchProducts) {
+                session.save(product);
+            }
+
+            // Flush and clear the session to execute the batch
+            session.flush();
+            session.clear();
+
+            // Print batch ended
+            System.out.println("Batch ended: " + batchProducts.size() + " products");
+        }
+
+        // Commit the transaction
+        transaction.commit();
         session.close();
 
-        // Close the session factory
-        sessionFactory.close();
-    }
-
-    // Utility method to print users
-    private static void printUsers(List<User> users) {
-        for (User user : users) {
-            System.out.println("User ID: " + user.getId() + ", Name: " + user.getName() + ", Email: " + user.getEmail());
-        }
     }
 }
