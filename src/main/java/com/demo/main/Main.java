@@ -38,6 +38,25 @@ public class Main {
 
         // Save the user object (Persistent state)
         session.save(user);
+        
+        
+    
+     		User user1 = new User();
+             user1.setName("Shiva");
+             user1.setEmail("Shivam@gmail.com");
+
+             // Create Address object
+             Address address1 = new Address();
+             address1.setStreet("Mlg");
+             address1.setCity("nalgonda");
+             address1.setState("TG");
+             address1.setZipCode("508207");
+
+             // Set address to user
+             user1.setAddress(address1);
+
+             // Save the user object (Persistent state)
+             session.save(user1);
 
 
 		// Commit the transaction
